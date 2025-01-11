@@ -12,34 +12,26 @@ public class Worker extends Thread
     //overriding the default run method we inherited from Thread
     public void run()
     {
-        for (int count=0; count<1000; count++)
-        {    
-            if(theOtherThread != null)
+        for (int count=0; count<100; count++)
+        {
             {
-                System.out.println(this.name + " Waiting");
-                try 
-                {
-                    this.theOtherThread.wait();
-                } 
-                catch(Exception e) 
-                {
-                    //Ignore this exception for now...
-                }
-            }
-            else
-            {
-                System.out.println(this.name + " Working: " + count);
                 if (count%2==0)
                 {
-                    System.out.println("Ping");
+                    System.out.println(this.name + ": Ping: " + count);
                 }
                 else
                 {
-                    System.out.println("Pong");
+                    System.out.println(this.name + ": Pong: " + count);
                 }
             }
+            try
+            {
+                this.sleep(1);
+            }
+            catch (Exception e)
+            {
+                //ignore
+            }
         }
-        System.out.println(this.name + " Done!");
-
     }
 }
