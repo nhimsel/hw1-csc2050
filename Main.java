@@ -1,11 +1,10 @@
-public class Driver
+public class Main
 {
 	public static void main(String[] args)
 	{
-	   WorkerBee t1 = new WorkerBee("Mike", null);
-	   WorkerBee t2 = new WorkerBee("Dave", t1);
+	   Worker t1 = new Worker("Worker 1", null);
+	   Worker t2 = new Worker("Worker 2", t1);
 	   t1.start(); //does not block
 	   t2.start(); //does not block
-	   
 	}
 }

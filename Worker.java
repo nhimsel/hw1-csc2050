@@ -1,9 +1,9 @@
 public class Worker extends Thread
 {
-    private WorkerBee theOtherThread;
+    private Worker theOtherThread;
     private String name;
     
-    public WorkerBee(String name, WorkerBee theOtherThread)
+    public Worker(String name, Worker theOtherThread)
     {
         this.theOtherThread = theOtherThread;
         this.name = name;
@@ -12,23 +12,33 @@ public class Worker extends Thread
     //overriding the default run method we inherited from Thread
     public void run()
     {
-        if(theOtherThread != null)
-        {
-            System.out.println(this.name + " Waiting");
-            try 
+        for (int count=0; count<1000; count++)
+        {    
+            if(theOtherThread != null)
             {
-                this.theOtherThread.wait();
-            } 
-            catch(Exception e) 
+                System.out.println(this.name + " Waiting");
+                try 
+                {
+                    this.theOtherThread.wait();
+                } 
+                catch(Exception e) 
+                {
+                    //Ignore this exception for now...
+                }
+            }
+            else
             {
-                //Ignore this exception for now...
+                System.out.println(this.name + " Working: " + count);
+                if (count%2==0)
+                {
+                    System.out.println("Ping");
+                }
+                else
+                {
+                    System.out.println("Pong");
+                }
             }
         }
-        else
-        {
-            System.out.println(this.name + " Working");
-        }
-        
         System.out.println(this.name + " Done!");
 
     }
