@@ -1,36 +1,39 @@
 public class Worker extends Thread
 {
-    private Worker theOtherThread;
+    final Object lock;
     private String name;
     
-    public Worker(String name, Worker theOtherThread)
+    public Worker(String name, Object lock)
     {
-        this.theOtherThread = theOtherThread;
+        this.lock = lock;
         this.name = name;
     }
     
     //overriding the default run method we inherited from Thread
     public void run()
     {
-        for (int count=0; count<100; count++)
+        int count = 0;
+        int max = 1000;
+        while (count<max)
         {
+            synchronized (this.lock)
             {
                 if (count%2==0)
                 {
-                    System.out.println(this.name + ": Ping: " + count);
+                    System.out.println(this.name + ": Ping");
                 }
                 else
                 {
-                    System.out.println(this.name + ": Pong: " + count);
+                    System.out.println(this.name + ": Pong");
                 }
-            }
-            try
-            {
-                this.sleep(1);
-            }
-            catch (Exception e)
-            {
-                //ignore
+                count++;
+                this.lock.notify();
+                try
+                {
+                    if (count<max) this.lock.wait();
+                }
+                catch (Exception e)
+                {/* ignore */}
             }
         }
     }
